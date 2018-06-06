@@ -55,7 +55,7 @@ This test case is used to verify sort funtionality for each sortingValues field 
 
 ## Deployment
 
-Add additional notes about how to deploy this on a live system
+I used my owner framework for PHP (based in Laravel structure) / Javascript (ljpApp), to be more native.
 
 ## Built With
 
@@ -66,10 +66,4 @@ Add additional notes about how to deploy this on a live system
 ## Authors
 
 * **LouisJimenenzP** - *Homework* - [LouisJimenezP](https://github.com/LouisJimenezP)
-
-## Acknowledgments
-
-* Hat tip to anyone whose code was used
-* Inspiration
-* etc
 
