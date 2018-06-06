@@ -1,0 +1,5 @@
+.DS_Store
+composer.lock
+/resources/app/config.json
+/node_modules
+/vendor

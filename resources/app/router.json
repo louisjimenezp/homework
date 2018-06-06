@@ -1,0 +1,17 @@
+{
+    "version": "v1.0.0",
+    "routes": [
+        {
+            "path" : "/api/search.get",
+            "uses" : "Api\\SearchController@get"
+        },
+        {
+            "path" : "/api/favorite.add",
+            "uses" : "Api\\FavoriteController@add"
+        },
+        {
+            "path" : "/api/favorite.remove",
+            "uses" : "Api\\FavoriteController@remove"
+        }
+    ]
+}

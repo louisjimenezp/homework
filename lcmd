@@ -1,0 +1,9 @@
+#!/usr/bin/env php
+<?php
+
+require("app/autoload.php");
+
+use App\Console\Kernel;
+
+$kernel = new Kernel();
+$kernel->handle( $app, $argv );

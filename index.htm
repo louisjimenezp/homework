@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<title>Take Away</title>
+	<!-- Required meta tags -->
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no">
+
+	<!-- Bootstrap CSS -->
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+	<style>
+		@-webkit-keyframes price-success { 
+			0% { color: #3c763d; background-color: #dff0d8; }
+			100% { color: inherit; background-color: inherit; }
+		}
+		@-webkit-keyframes price-danger {
+			0% { color: #a94442; background-color: #f2dede; }
+			100% { color: inherit; backgrount-color: inherit; }
+		}
+	</style>
+
+	<!-- JavaScript -->
+	<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+	<script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+	<script src="cdn/js/appv2.js"></script>
+</head>
+<body>
+<div id="app" class="container">
+	<router-view></router-view>
+</div>
+</body>
+<!-- Start Templates -->
+<script id="home" type="text/x-template">
+<div>
+	<h1>Takeaway Homework</h1>
+
+	<form v-on:submit="onSubmitSearchForm">
+		<div class="form-group">
+			<label for="searchOrderby">Order by</label>
+			<select class="form-control" v-model="filter.orderby" id="searchOrderby" v-on:change="onSubmitSearchForm">
+				<option v-for="order in orderOptions" v-bind:value="order.field">
+					{{order.name}}
+				</option>
+			</select>
+		</div>
+		<div class="form-group">
+			<label for="searchKeywords">Keywords</label>
+			<input type="text" class="form-control" v-model="filter.keywords" id="searchKeywords" placeholder="Keywords" autocomplete="off">
+		</div>
+	</form>
+
+	<div class="card mb-3" v-for="res in result">
+	<div class="card-body">
+		<h5 class="card-title">{{res.name}} <span class="badge badge-secondary" v-if="res.isFavorite">Favorite</span></h5>
+		<p class="card-text">{{res.status}} | {{res.orderField}}: {{res.orderValue}}</p>
+		<a href="javascript:;" v-on:click="addFavorite(res.idx)" v-if="!res.isFavorite" class="card-link">Mark as Favorite</a>
+		<a href="javascript:;" v-on:click="delFavorite(res.idx)" v-if="res.isFavorite" class="card-link">Mark as Not Favorite</a>
+	</div>
+	</div>
+</div>
+</script>
+<!-- End Templates -->
+<!-- Start Router -->
+<script>
+// 0. If using a module system, call Vue.use(VueRouter)
+lApp.view = {
+	user: 'test',
+	result: [],
+	orderOptions: [],
+	filter: {
+		keywords: '',
+		orderby: 'bestMatch',
+	}
+};
+const lDateFormat = lApp.newUtil('dateFormat', {});
+
+// 1. Define route components
+const Home = Vue.extend({
+	template: '#home',
+	data: function() {
+		return lApp.view;
+	},
+	beforeRouteEnter: function (to, from, next) {
+		next(vm => vm.fetchData());
+	},
+	beforeRouteUpdate: function (to, from, next) {
+		this.fetchData();
+		next();
+	},
+	methods: {
+		fetchData: function()
+		{
+			lApp.jQuery.ajax({
+				url: '/api/search.get',
+				data: lApp.view.filter,
+				cache: false
+			}).done(function( resp ){
+				lApp.doController('home', 'load', resp);
+			});
+		},
+		onSubmitSearchForm: function(e){
+			e.preventDefault();
+			this.fetchData();
+		},
+		addFavorite: function(idx){
+			var that = this;
+			lApp.jQuery.ajax({
+				url: '/api/favorite.add',
+				data: {idx: idx},
+				cache: false
+			}).done(function( resp ){
+				that.fetchData();
+			});
+		},
+		delFavorite: function(idx){
+			var that = this;
+			lApp.jQuery.ajax({
+				url: '/api/favorite.remove',
+				data: {idx: idx},
+				cache: false
+			}).done(function( resp ){
+				that.fetchData();
+			});
+		}
+	}
+});
+
+// 2. Define some routes
+const routes = [
+  { name: 'home', path: '/', component: Home }
+];
+
+// 3. Create the router instance and pass the `routes` option
+const router = new VueRouter({
+  routes
+});
+
+// 4. Create and mount the root instance.
+const vApp = new Vue({
+	router
+});
+
+</script>
+<!-- End Router -->
+<!-- Start App -->
+<script>
+	$(document).ready(function() {
+		lApp.jQuery = jQuery;
+		lApp.script['chartJS'] = false;
+		lApp.setConfiguration( {
+			debug: true,
+			runCallback: function( app )
+			{
+				// init vueApp
+				vApp.$mount('#app');
+			}
+		} );
+		lApp.init();
+	});
+</script>
+<!-- End App -->
+</html>

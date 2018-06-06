@@ -1,0 +1,13 @@
+{
+    "environment": "dev",
+    "timezone": "Europe/Madrid",
+    "protocol": "http",
+    "domain": "ljp.takeaway.test",
+    "mysql": [{
+        "host": "localhost",
+        "user": "root",
+        "pass": "",
+        "db": "ljp_crypto",
+        "alias": "DEFAULT"
+    }]
+}

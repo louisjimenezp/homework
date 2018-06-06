@@ -1,0 +1,36 @@
+[{
+    "name": "Top restaurants",
+    "field": "topRestaurants"
+},
+{
+    "name": "Best match",
+    "field": "bestMatch"
+},
+{
+    "name": "Newest",
+    "field": "newest"
+},
+{
+    "name": "Rating Average",
+    "field": "ratingAverage"
+},
+{
+    "name": "Distance",
+    "field": "distance"
+},
+{
+    "name": "Popularity",
+    "field": "popularity"
+},
+{
+    "name": "Average product price",
+    "field": "averageProductPrice"
+},
+{
+    "name": "Deliverycosts",
+    "field": "deliveryCosts"
+},
+{
+    "name": "Minimum costs",
+    "field": "minCost"
+}]
